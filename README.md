@@ -1,6 +1,7 @@
 # Smart security camera with Raspberry Pi Zero and AWS
 
-https://www.bouvet.no/bouvet-deler/utbrudd/building-a-motion-activated-security-camera-with-the-raspberry-pi-zero
-https://github.com/markwest1972/smart-security-camera/tree/master/aws-lambda-functions/nodejs/nodemailer-send-notification
+This repository shows how to turn Raspberry Pi Zero into a smart security camera with the help of Amazon Web Services. The solution is based on the following two key components:
+* use of available Motion software to detect movement,
+* use of Amazon Rekognition to identify humans in images and thus reduce the rate of false positives.
 
-https://github.com/salekd/rpizero_smart_camera/wiki
+The installation procedure is documented here https://github.com/salekd/rpizero_smart_camera/wiki
