@@ -48,6 +48,7 @@ From the Identity and Access Management (IAM) Console, generate an access key (A
 https://console.aws.amazon.com/iam/home#/security_credential
 
 Download the AWS Command Line Interface (CLI)
+https://aws.amazon.com/cli/
 
 ```
 sudo apt-get install libyaml-dev libpython2.7-dev
@@ -63,3 +64,8 @@ http://docs.aws.amazon.com/general/latest/gr/rande.html
 ```
 aws configure
 ```
+
+### S3 buckets
+
+Create S3 bucket called `rpizero-smart-camera-upload` from
+https://s3.console.aws.amazon.com/s3/home
