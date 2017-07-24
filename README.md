@@ -67,5 +67,8 @@ aws configure
 
 ### S3 buckets
 
-Create S3 bucket called `rpizero-smart-camera-upload` from
+Create S3 buckets called `rpizero-smart-camera-upload` and `rpizero-smart-camera-archive` from
 https://s3.console.aws.amazon.com/s3/home
+
+
+
