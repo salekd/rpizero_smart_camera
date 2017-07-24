@@ -60,7 +60,7 @@ def lambda_handler(event, context):
         human_labels = ["Human", "People", "Person", "Selfie"]
         human_detected = False
         for label in response_rekognition["Labels"]:
-            if label["Name"] in human_labels and label["Confidence"] > 0.99:
+            if label["Name"] in human_labels and label["Confidence"] > 99.:
                 human_detected = True
                 break
 
