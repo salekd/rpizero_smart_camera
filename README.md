@@ -5,3 +5,5 @@ This repository shows how to turn Raspberry Pi Zero into a smart security camera
 * use of Amazon Rekognition to identify humans in images and thus reduce the rate of false positives.
 
 The installation procedure is documented here https://github.com/salekd/rpizero_smart_camera/wiki
+
+![](https://github.com/salekd/rpizero_smart_camera/blob/master/camera.JPG)
