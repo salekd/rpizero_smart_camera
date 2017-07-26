@@ -6,6 +6,7 @@ import urllib
 import os
 import sys
 import zipfile
+import uuid
 
 s3 = boto3.client('s3')
 ses = boto3.client('ses')
