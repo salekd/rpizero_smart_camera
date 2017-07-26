@@ -12,13 +12,14 @@ full_paths = [os.path.join(img_dir, basename) for basename in files]
 filename_local = max(full_paths, key=os.path.getctime)
 
 # Filename that will appear in S3
-# Strip the first three characters that stand for the image number
+# Strip the image number at the beginning of the file name
 # as we want the file name to start with a date.
 # For example 04-20170724114420-00.jpg will become 20170724114420-00.jpg
 # The last two digits stand for the frame number.
 # http://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#picture_filename
 # http://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#conversion_specifiers
-filename_s3 = os.path.basename(filename_local)[3:]
+filename_s3 = os.path.basename(filename_local)
+filename_s3 = filename_s3[filename_s3.find('-')+1:]
 bucket_name = 'rpizero-smart-camera-upload'
 
 # Uploads the given file using a managed uploader, which will split up large
