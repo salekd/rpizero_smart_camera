@@ -114,10 +114,9 @@ def lambda_handler(event, context):
     # Detect human
     human_detected = False
     scores, classes, image_with_labels = detect_objects(image_np, sess, detection_graph)
-    for item in zip(scores[0], classes[0]):
-        label = category_index[item[i]]['name']
-        score = item[0]
-        if label == 'person' and score > 0.5:
+    print("\n".join("{0:<20s}: {1:.1f}%".format(category_index[c]['name'], s*100.) for (c, s) in zip(classes[0], scores[0])))
+    for (c, s) in zip(classes[0], scores[0]):
+        if category_index[c]['name'] == 'person' and s > 0.5:
             human_detected = True
             break
 
