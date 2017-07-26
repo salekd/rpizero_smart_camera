@@ -3,7 +3,7 @@ import sys
 
 # Location of the pre-compiled dependencies
 HERE = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(HERE, "vendored"))
+sys.path.append(os.path.join(HERE, "../models"))
 
 # Now that the script knows where to look, we can safely import our objects
 #import cv2
@@ -17,10 +17,10 @@ from object_detection.utils import visualization_utils as vis_util
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 MODEL_NAME = 'ssd_mobilenet_v1_coco_11_06_2017'
-PATH_TO_CKPT = os.path.join(HERE, 'object_detection', MODEL_NAME, 'frozen_inference_graph.pb')
+PATH_TO_CKPT = os.path.join(HERE, MODEL_NAME, 'frozen_inference_graph.pb')
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join(HERE, 'object_detection', 'data', 'mscoco_label_map.pbtxt')
+PATH_TO_LABELS = os.path.join(HERE, '../models/object_detection', 'data', 'mscoco_label_map.pbtxt')
 
 NUM_CLASSES = 90
 
@@ -64,7 +64,7 @@ def detect_objects(image_np, sess, detection_graph):
 
 if __name__ == '__main__':
     # Load image
-    image = Image.open("object_detection/test_images/image1.jpg")
+    image = Image.open("../models/object_detection/test_images/image1.jpg")
     #image = Image.open("20170725072126-00.jpg")
     (im_width, im_height) = image.size
     image_np = np.array(image.getdata()).reshape(
