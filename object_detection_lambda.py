@@ -12,7 +12,7 @@ ses = boto3.client('ses')
 
 
 # Donwload dependencies from S3
-target = "rpizero-smart-camera-archive"
+bucket = "rpizero-smart-camera-archive"
 key = "vendored.zip"
 download_path = '/tmp/{}'.format(key)
 response_s3 = s3.download_file(bucket, key, download_path)
