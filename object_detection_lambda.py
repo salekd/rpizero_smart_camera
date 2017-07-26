@@ -15,7 +15,7 @@ ses = boto3.client('ses')
 target = "rpizero-smart-camera-archive"
 key = "vendored.zip"
 download_path = '/tmp/{}'.format(key)
-response_s3 = s3_client.download_file(bucket, key, download_path)
+response_s3 = s3.download_file(bucket, key, download_path)
 print(response_s3)
 zip_ref = zipfile.ZipFile("/tmp/vendored.zip", 'r')
 zip_ref.extractall("/tmp")
@@ -92,19 +92,12 @@ def lambda_handler(event, context):
 
     # Load image
     download_path = '/tmp/{}{}'.format(uuid.uuid4(), key)
-    response_s3 = s3_client.download_file(bucket, key, download_path)
+    response_s3 = s3.download_file(bucket, key, download_path)
     print(response_s3)
     image = Image.open(download_path)
     (im_width, im_height) = image.size
     image_np = np.array(image.getdata()).reshape(
         (im_height, im_width, 3)).astype(np.uint8)
-
-    # Donwload model from S3
-#    target = "rpizero-smart-camera-archive"
-#    key = "ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb"
-#    download_path = '/tmp/{}'.format(key)
-#    response_s3 = s3_client.download_file(bucket, key, download_path)
-#    print(response_s3)
 
     # Load a (frozen) Tensorflow model into memory.
     detection_graph = tf.Graph()
