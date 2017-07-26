@@ -5,10 +5,21 @@ import json
 import urllib
 import os
 import sys
+import zipfile
+
+# Donwload dependencies from S3
+target = "rpizero-smart-camera-archive"
+key = "vendored.zip"
+download_path = '/tmp/{}'.format(key)
+response_s3 = s3_client.download_file(bucket, key, download_path)
+print(response_s3)
+zip_ref = zipfile.ZipFile("/tmp/vendored.zip", 'r')
+zip_ref.extractall("/tmp")
+zip_ref.close()
 
 # Location of the pre-compiled dependencies
 HERE = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(HERE, "vendored"))
+sys.path.append(os.path.join(HERE, "/tmp/vendored"))
 
 # Now that the script knows where to look, we can safely import our objects
 import numpy as np
@@ -24,10 +35,10 @@ ses = boto3.client('ses')
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 MODEL_NAME = 'ssd_mobilenet_v1_coco_11_06_2017'
-PATH_TO_CKPT = os.path.join('/tmp/', 'object_detection', MODEL_NAME, 'frozen_inference_graph.pb')
+PATH_TO_CKPT = os.path.join(MODEL_NAME, 'frozen_inference_graph.pb')
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join(HERE, 'object_detection', 'data', 'mscoco_label_map.pbtxt')
+PATH_TO_LABELS = os.path.join('/tmp/vendored', 'object_detection', 'data', 'mscoco_label_map.pbtxt')
 
 NUM_CLASSES = 90
 
@@ -89,11 +100,11 @@ def lambda_handler(event, context):
         (im_height, im_width, 3)).astype(np.uint8)
 
     # Donwload model from S3
-    target = "rpizero-smart-camera-archive"
-    key = "ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb"
-    download_path = '/tmp/{}'.format(key)
-    response_s3 = s3_client.download_file(bucket, key, download_path)
-    print(response_s3)
+#    target = "rpizero-smart-camera-archive"
+#    key = "ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb"
+#    download_path = '/tmp/{}'.format(key)
+#    response_s3 = s3_client.download_file(bucket, key, download_path)
+#    print(response_s3)
 
     # Load a (frozen) Tensorflow model into memory.
     detection_graph = tf.Graph()
