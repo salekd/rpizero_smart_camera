@@ -128,11 +128,14 @@ def lambda_handler(event, context):
     copy_source = {'Bucket':bucket, 'Key':key}
     response_s3 = s3.copy(Bucket=target_bucket, Key=target_key, CopySource=copy_source)
     print(response_s3)
+
+    # Generate url
+    target_url = s3.generate_presigned_url('get_object', Params = {'Bucket': target_bucket, 'Key': target_key}, ExpiresIn = 7*24*3600)
+    print(target_url)
+
+    # Delete the original file
     response_s3 = s3.delete_object(Bucket=bucket, Key=key)
     print(response_s3)
-
-    target_url = s3.generate_presigned_url('get_object', Params = {'Bucket': target_bucket, 'Key': target_key}, ExpiresIn = 24*3600)
-    print(target_url)
 
 
     # Send e-mail notification
