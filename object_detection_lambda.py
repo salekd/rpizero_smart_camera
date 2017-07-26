@@ -7,6 +7,10 @@ import os
 import sys
 import zipfile
 
+s3 = boto3.client('s3')
+ses = boto3.client('ses')
+
+
 # Donwload dependencies from S3
 target = "rpizero-smart-camera-archive"
 key = "vendored.zip"
@@ -17,9 +21,8 @@ zip_ref = zipfile.ZipFile("/tmp/vendored.zip", 'r')
 zip_ref.extractall("/tmp")
 zip_ref.close()
 
-# Location of the pre-compiled dependencies
-HERE = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(HERE, "/tmp/vendored"))
+# Location of the dependencies
+sys.path.append("/tmp/vendored")
 
 # Now that the script knows where to look, we can safely import our objects
 import numpy as np
@@ -29,13 +32,10 @@ from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
 
-s3 = boto3.client('s3')
-ses = boto3.client('ses')
-
-
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 MODEL_NAME = 'ssd_mobilenet_v1_coco_11_06_2017'
-PATH_TO_CKPT = os.path.join(MODEL_NAME, 'frozen_inference_graph.pb')
+HERE = os.path.dirname(os.path.realpath(__file__))
+PATH_TO_CKPT = os.path.join(HERE, MODEL_NAME, 'frozen_inference_graph.pb')
 
 # List of the strings that is used to add correct label for each box.
 PATH_TO_LABELS = os.path.join('/tmp/vendored', 'object_detection', 'data', 'mscoco_label_map.pbtxt')
