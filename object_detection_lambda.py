@@ -93,8 +93,7 @@ def lambda_handler(event, context):
 
     # Load image
     download_path = '/tmp/{}{}'.format(uuid.uuid4(), key)
-    response_s3 = s3.download_file(bucket, key, download_path)
-    print(response_s3)
+    s3.download_file(bucket, key, download_path)
     image = Image.open(download_path)
     (im_width, im_height) = image.size
     image_np = np.array(image.getdata()).reshape(
@@ -122,20 +121,24 @@ def lambda_handler(event, context):
 
     sess.close()
 
+    # Save the image with labels as jpg
+    filename_local = '/tmp/{}{}'.format(uuid.uuid4(), key)
+    image = Image.fromarray(image_with_labels)
+    image.save(filename_local)
+
     # Move the image to the archive folder
     target_bucket = "rpizero-smart-camera-archive"
     target_key = "human/{}".format(key) if human_detected else "false_positive/{}".format(key)
-    copy_source = {'Bucket':bucket, 'Key':key}
-    response_s3 = s3.copy(Bucket=target_bucket, Key=target_key, CopySource=copy_source)
-    print(response_s3)
+    #copy_source = {'Bucket':bucket, 'Key':key}
+    #s3.copy(Bucket=target_bucket, Key=target_key, CopySource=copy_source)
+    s3.upload_file(filename_local, target_bucket, target_key)
 
     # Generate url
     target_url = s3.generate_presigned_url('get_object', Params = {'Bucket': target_bucket, 'Key': target_key}, ExpiresIn = 7*24*3600)
     print(target_url)
 
     # Delete the original file
-    response_s3 = s3.delete_object(Bucket=bucket, Key=key)
-    print(response_s3)
+    s3.delete_object(Bucket=bucket, Key=key)
 
 
     # Send e-mail notification
