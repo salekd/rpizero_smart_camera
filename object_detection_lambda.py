@@ -131,7 +131,7 @@ def lambda_handler(event, context):
     target_key = "human/{}".format(key) if human_detected else "false_positive/{}".format(key)
     #copy_source = {'Bucket':bucket, 'Key':key}
     #s3.copy(Bucket=target_bucket, Key=target_key, CopySource=copy_source)
-    s3.upload_file(filename_local, target_bucket, target_key)
+    s3.upload_file(filename_local, target_bucket, target_key, ExtraArgs={'ContentType': "image/jpeg", 'ACL': "public-read"})
 
     # Generate url
     target_url = s3.generate_presigned_url('get_object', Params = {'Bucket': target_bucket, 'Key': target_key}, ExpiresIn = 7*24*3600)
